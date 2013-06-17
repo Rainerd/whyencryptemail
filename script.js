@@ -55,3 +55,17 @@ function update_instructions() {
 	}
 	document.getElementById('instructions').innerHTML = instructions;
 }
+// The feedback can be grepped from the server's log
+// This way we avoid needing any server side scripts
+// but it does require logging being enabled
+function givefeedback(type) {
+	var operatingsystems = document.getElementById('operatingsystem');
+	var os = operatingsystems.options[operatingsystems.selectedIndex].value;
+	var clients = document.getElementById('client');
+	var client = clients.options[clients.selectedIndex].value;
+
+	document.getElementById('feedback').innerHTML = 'Thank you for the feedback!'
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.open('POST','feedback_'+os+'_'+client+'_'+type,true);
+	xmlhttp.send();
+}
