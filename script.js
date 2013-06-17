@@ -7,7 +7,7 @@ function list_clients(os) {
 	var clients = document.getElementById('client');
 	clients.options.length = 0;
 	clients.disabled = false;
-	if(os == 'windows' || os == 'osx' || os == 'debian' || os == 'fedora') {
+	if(os === 'windows' || os === 'osx' || os === 'debian' || os === 'fedora') {
 		clients.options[clients.options.length] = new Option('Thunderbird','thunderbird');
 		clients.options[clients.options.length] = new Option('Google Chrome / Chromium','chrome');
 	}
@@ -24,8 +24,8 @@ function update_instructions() {
 	var clients = document.getElementById('client');
 	var client = clients.options[clients.selectedIndex].value;
 
-	instructions = '';
-	if(client != 'chrome') { // All others need GPG to be instlled separately
+	var instructions = '';
+	if(client !== 'chrome') { // All others need GPG to be instlled separately
 	switch(os) {
 		case 'windows':
 			instructions='<li><a href="http://gpg4win.org">Install GPG</a></li>';
@@ -48,12 +48,13 @@ function update_instructions() {
 		case "thunderbird":
 			instructions = instructions + '<li><a href="https://addons.mozilla.org/en-US/thunderbird/addon/enigmail/">Install Enigmail</a></li>';
 			instructions = instructions + '<li>Choose OpenPGP -> Setup Wizard and follow the instructions. Signing emails is usually unnecessary so you may want to chose not to do that by default. You should chose to encrypt mail by default.</li>';
-			instructions = instructions + '<li>Choose OpenPGP -> Key Management -> Keyserver -> Search for Keys. Search for the email addresses of your friends to see if they have published encryption keys.</li>'
+			instructions = instructions + '<li>Choose OpenPGP -> Key Management -> Keyserver -> Search for Keys. Search for the email addresses of your friends to see if they have published encryption keys.</li>';
 			instructions = instructions + '<li>(optional) Chose OpenPGP -> Key Management. Choose "Display All Keys by Default". Right click on your key and choose "Upload Pulbic Keys to Keyserver. Tell your friends to import the key you just published to the keyserver</li>';
 			break;
 		case 'chrome':
-			instructions = instructions + '<li>Install <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a>.'
-			instructions = instructions + '<li>Read and follow the <a href="http://www.mailvelope.com/help#keys">excellent documentation</a></li>'
+			instructions = instructions + '<li>Install <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a>.';
+			instructions = instructions + '<li>Read and follow the <a href="http://www.mailvelope.com/help#keys">excellent documentation</a></li>';
+			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
 }
@@ -66,8 +67,8 @@ function givefeedback(type) {
 	var clients = document.getElementById('client');
 	var client = clients.options[clients.selectedIndex].value;
 
-	document.getElementById('feedback').innerHTML = 'Thank you for the feedback!'
-	xmlhttp=new XMLHttpRequest();
+	document.getElementById('feedback').innerHTML = 'Thank you for the feedback!';
+	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.open('POST','feedback_'+os+'_'+client+'_'+type,true);
 	xmlhttp.send();
 }
