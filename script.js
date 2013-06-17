@@ -41,6 +41,7 @@ function update_instructions() {
 			break;
 		default:
 			instructions='';
+			break;
 	}
 	}
 	switch(client) {
@@ -49,6 +50,7 @@ function update_instructions() {
 			instructions = instructions + '<li>Choose OpenPGP -> Setup Wizard and follow the instructions. Signing emails is usually unnecessary so you may want to chose not to do that by default. You should chose to encrypt mail by default.</li>';
 			instructions = instructions + '<li>Choose OpenPGP -> Key Management -> Keyserver -> Search for Keys. Search for the email addresses of your friends to see if they have published encryption keys.</li>'
 			instructions = instructions + '<li>(optional) Chose OpenPGP -> Key Management. Choose "Display All Keys by Default". Right click on your key and choose "Upload Pulbic Keys to Keyserver. Tell your friends to import the key you just published to the keyserver</li>';
+			break;
 		case 'chrome':
 			instructions = instructions + '<li>Install <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a>.'
 			instructions = instructions + '<li>Read and follow the <a href="http://www.mailvelope.com/help#keys">excellent documentation</a></li>'
