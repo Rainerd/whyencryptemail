@@ -17,6 +17,26 @@ function list_clients(os) {
 
 	}
 }
+function make_step(instruction, video) {
+	instruction = '<li>'+instruction;
+	if(video != null) {
+		instruction = instruction +' (<a href="javascript:show_video(\''+video+'\')">Show me</a>)';
+	}
+	instruction = instruction + '</li>'
+	return instruction;
+}
+function show_video(video) {
+        if(video != null) {
+                document.getElementById('video').style.display = 'block';
+                document.getElementById('webmsrc').src = 'webm/'+video+'.webm';
+                document.getElementById('mp4src').src = 'mp4/'+video+'.mp4';
+                document.getElementById('videoplayer').load();
+                document.getElementById('videoplayer').play();
+        }
+        else {
+                document.getElementById('video').style.display = 'none';
+        }
+}
 
 function update_instructions() {
 	var operatingsystems = document.getElementById('operatingsystem');
@@ -28,16 +48,16 @@ function update_instructions() {
 	if(client !== 'chrome') { // All others need GPG to be instlled separately
 	switch(os) {
 		case 'windows':
-			instructions='<li><a href="http://gpg4win.org">Install GPG</a></li>';
+			instructions=make_step('<a href="http://gpg4win.org">Install GPG</a>',null);
 			break;
 		case 'osx':
-			instructions='<li><a href="https://gpgtools.org/">Install GPG</a></li>';
+			instructions=make_step('<a href="https://gpgtools.org/">Install GPG</a>',null);
 			break;
 		case 'debian':
-			instructions='<li>Run "sudo apt-get install gpg"</li>';
+			instructions=make_step('Run "sudo apt-get install gpg"',null);
 			break;
 		case 'fedora':
-			instructions='<li>Run "sudo yum install gpg"</li>';
+			instructions=make_step('Run "sudo yum install gpg"','fedora_gpg_install');
 			break;
 		default:
 			instructions='';
@@ -46,14 +66,14 @@ function update_instructions() {
 	}
 	switch(client) {
 		case "thunderbird":
-			instructions = instructions + '<li><a href="https://addons.mozilla.org/en-US/thunderbird/addon/enigmail/">Install Enigmail</a></li>';
-			instructions = instructions + '<li>Choose OpenPGP -> Setup Wizard and follow the instructions. Signing emails is usually unnecessary so you may want to chose not to do that by default. You should chose to encrypt mail by default.</li>';
-			instructions = instructions + '<li>Choose OpenPGP -> Key Management -> Keyserver -> Search for Keys. Search for the email addresses of your friends to see if they have published encryption keys.</li>';
-			instructions = instructions + '<li>(optional) Chose OpenPGP -> Key Management. Choose "Display All Keys by Default". Right click on your key and choose "Upload Pulbic Keys to Keyserver. Tell your friends to import the key you just published to the keyserver</li>';
+			instructions = instructions + make_step('<a href="https://addons.mozilla.org/en-US/thunderbird/addon/enigmail/">Install Enigmail</a>','fedora_enigmail_install');
+			instructions = instructions + make_step('Choose OpenPGP -> Setup Wizard and follow the instructions. Signing emails is usually unnecessary so you may want to chose not to do that by default. You should chose to encrypt mail by default.','fedora_enigmail_setup');
+			instructions = instructions + make_step('Choose OpenPGP -> Key Management -> Keyserver -> Search for Keys. Search for the email addresses of your friends to see if they have published encryption keys.','fedora_enigmail_import');
+			instructions = instructions + make_step('(optional) Chose OpenPGP -> Key Management. Choose "Display All Keys by Default". Right click on your key and choose "Upload Pulbic Keys to Keyserver. Tell your friends to import the key you just published to the keyserver','fedora_enigmail_upload');
 			break;
 		case 'chrome':
-			instructions = instructions + '<li>Install <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a>.';
-			instructions = instructions + '<li>Read and follow the <a href="http://www.mailvelope.com/help#keys">excellent documentation</a></li>';
+			instructions = instructions + make_step('Install <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a>.',null);
+			instructions = instructions + make_step('Read and follow the <a href="http://www.mailvelope.com/help#keys">excellent documentation</a>',null);
 			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
