@@ -54,10 +54,10 @@ function update_instructions() {
 			instructions=make_step('<a href="https://gpgtools.org/">Install GPG</a>',null);
 			break;
 		case 'debian':
-			instructions=make_step('Run "sudo apt-get install gpg"',null);
+			instructions=make_step('Run <span class="console">sudo apt-get install gnupg</span>',null);
 			break;
 		case 'fedora':
-			instructions=make_step('Run "sudo yum install gpg"','fedora_gpg_install');
+			instructions=make_step('Run <span class="console">sudo yum install gpg</span>','fedora_gpg_install');
 			break;
 		default:
 			instructions='';
