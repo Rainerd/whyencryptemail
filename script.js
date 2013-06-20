@@ -72,8 +72,9 @@ function update_instructions() {
 			instructions = instructions + make_step('(optional) Chose OpenPGP -> Key Management. Choose "Display All Keys by Default". Right click on your key and choose "Upload Pulbic Keys to Keyserver. Tell your friends to import the key you just published to the keyserver','fedora_enigmail_upload');
 			break;
 		case 'chrome':
-			instructions = instructions + make_step('Install <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a>.',null);
-			instructions = instructions + make_step('Read and follow the <a href="http://www.mailvelope.com/help#keys">excellent documentation</a>',null);
+			instructions = instructions + make_step('Install <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a>.','mailvelope_install');
+			instructions = instructions + make_step('Go to the <a href="http://sks-keyservers.net/i/#extract">SKS Keyservers</a> and type in the email address of one of your friends in the box marked "Search String". Click the on the link in the keyID column. Select all the text on the page, press the right mouse button and select "copy". Click the Mailvelope button next to the address bar and select "Options" and then "Import Keys". Click the text box with the right mouse button and select "Paste". Click "Submit".','mailvelope_import');
+			instructions = instructions + make_step('Click the Mailvelope button next the the address bar and select "Options" and then "Generate Key". Type in your name, e-mail address and a password. Click submit. Click "Display Keys". Select the key you just generated and click "Export" and "Display Public Key". Select all the text in the box, click with your right mouse button and select "Copy". Go to <a href="http://sks-keyservers.net/i/#submit">SKS Keyservers</a>, right click with your mouse on the text box and select "Paste". Click the "Submit this key to the keyserver!" button.','mailvelope_generate');
 			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
