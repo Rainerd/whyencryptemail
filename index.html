@@ -9,18 +9,28 @@
 			#toilet { float:left; height:90px; margin-right: 16px; }
 			#gandhi { float:right; height:90px; margin-left: 16px; }
 			p { clear: both }
-			blockquote {font-style: italic }
-			#video { top: 50%; left: 50%; width:800px; height:600; margin-top: -300px; margin-left: -400px; border: 1px solid black; position:fixed; display:none; }
+			blockquote { font-style: italic }
+			#video { top: 50%; left: 50%; width:800px; height:600px; margin-top: -300px; margin-left: -400px; border: 1px solid black; position:fixed; display:none; background: white}
+			.console { background:#f0f0f0; font-family: Monospace; }
+			body { text-align: center; background:#f0f0f0; }
+			#wrapper { margin: 0 auto; max-width: 1024px; text-align:left; background: white; padding: 32px;}
+			.nb { background: #ffdfdf; }
+			#udhr { background: #efffef; text-align:center; max-width:850px; margin: 0 auto; }
+			#footer { text-align:center; margin: 0 auto; }
+
 		</style>
 		<script src='script.js' type='text/javascript'>
 		</script>
 	</head>
 	<body onLoad='update_os(document.getElementById("operatingsystem"))'>
-		<span>NB! This website is still under development and more instructions will be added. <a href='https://github.com/pafcu/whyencryptemail'>Please help.</a></span>
+		<span class='nb'>NB! This website is still under development and more instructions will be added. <a href='https://github.com/pafcu/whyencryptemail'>Please help.</a></span>
+		<div id='wrapper'>
 		<h1>It's not you, it's me: Why and how to encrypt email you send</h1>
 		<p>Privacy is not only a good idea, it is also a basic human right. Consider encrypting email you send to not only improve your own privacy, but also others'.</p>
+		<div id='udhr'>
 		<img src='img/Emblem_of_the_United_Nations.svg' id='un_logo' alt='United Nations logo'/>
 		<blockquote cite='https://www.un.org/en/documents/udhr/index.shtml#a12'>"No one shall be subjected to arbitrary interference with his privacy, family, home or correspondence, nor to attacks upon his honour and reputation. Everyone has the right to the protection of the law against such interference or attacks."<br><i><a href='https://www.un.org/en/documents/udhr/index.shtml#a12'>UN General Assembly, Universal Declaration of Human Rights, 10 December 1948, 217 A (III)</a></i></blockquote>
+		</div>
 		<h2>Why you should care</h2>
 		<p><img src='img/photo_rikva_01.svg' id='postcard' alt='Image of a postcard'/>Normally<sup><a id='footref1' href="#footnote1">1</a></sup> when you send an email it is possible for both your and the receiver's internet service providers (e.g. your workplace, local telephone or cable company) to read its contents. The same applies for the receiver of the email. Think of it like a normal postcard: anyone who works with handling the mail can read what you have written.</p>
 		<p><img src='img/Machovka_Toilet.svg' id='toilet' alt='Image of a person on a toilet'/>Would you be comfortable writing all your letters on postcards? Probably yes. After all, you don't have anything to hide, right? Many others, however, value their privacy. Everyone knows what happens when you go to the toilet. It is no secret. Yet we prefer to keep the door locked, because we value privacy<sup><a href='#footnote2' id='footref2'>2</a></sup>.</p>
@@ -54,20 +64,21 @@
 			<li id='import_instruction'>Import contact keys</li>
 			<li id='generate_instruction'>(optional) Generate an encryption key so that others can send encrypted mail to you.</li>
 		</ol>
-		<span id='feedback'>Were the above instructions clear enough? <a href='javascript:givefeedback("+")'>yes</a>/<a href='javascript:givefeedback("-")'>no</a></span>
-		<h2>Footnotes</h2>
-		<p><a id='footnote1'><sup>1</sup>If the mail server or your mail application is configured badly it may even be possible for anyone at all to read any mail you send or receive.</a><a href='#footref1'>^</a><br/>
-		<a id='footnote2'><sup>2</sup>Some people have no issues with urinals or public defecation. The author does.</a><a href='#footref2'>^</a>
-	<div id='footer'>
-		<a href='https://creativecommons.org/publicdomain/zero/1.0/'><img src='img/cc-zero.svg' alt='Creative Commons Zero button'/></a>
-	</div>
-	<div id='video'>
+		<div id='video'>
 		<video id='videoplayer' width="800" height="600" controls>
 			<source id='webmsrc' src="" type="video/webm">
 			<source id='mp4src' src="" type="video/mp4">
 			Your browser does not support the video tag.
 		</video> 
 		<a href='javascript:show_video(null);'>Close</a>
+		</div>
+		<span id='feedback'>Were the above instructions clear enough? <a href='javascript:givefeedback("+")'>yes</a>/<a href='javascript:givefeedback("-")'>no</a></span>
+		<h2>Footnotes</h2>
+		<p><a id='footnote1'><sup>1</sup>If the mail server or your mail application is configured badly it may even be possible for anyone at all to read any mail you send or receive.</a><a href='#footref1'>^</a><br/>
+		<a id='footnote2'><sup>2</sup>Some people have no issues with urinals or public defecation. The author does.</a><a href='#footref2'>^</a>
+		<div id='footer'>
+			<a href='https://creativecommons.org/publicdomain/zero/1.0/'><img src='img/cc-zero.svg' alt='Creative Commons Zero button'/></a> Public Domain. No Rights Reserved. <a href='mailto:feedback@whyencryptmail.net'>Send feedback</a>. Please use our <a href='public.key'>public key</a>.
+		</div>
 	</div>
 	</body>
 </html>
