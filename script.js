@@ -17,8 +17,8 @@ function list_clients(os) {
 
 	}
 }
-function make_step(instruction, video) {
-	instruction = '<li>'+instruction;
+function make_step(title, instruction, video) {
+	instruction = '<li><span class="instructiontitle">'+title+':</span> ' + instruction;
 	if(video != null) {
 		instruction = instruction +' (<a href="javascript:show_video(\''+video+'\')">Show me</a>)';
 	}
@@ -48,16 +48,16 @@ function update_instructions() {
 	if(client !== 'chrome') { // All others need GPG to be instlled separately
 	switch(os) {
 		case 'windows':
-			instructions=make_step('<a href="http://gpg4win.org">Install GPG</a>',null);
+			instructions=make_step('Install GPG','<a href="http://gpg4win.org">Click here</a>',null);
 			break;
 		case 'osx':
-			instructions=make_step('<a href="https://gpgtools.org/">Install GPG</a>',null);
+			instructions=make_step('Install GPG','<a href="https://gpgtools.org/">Install GPG</a>',null);
 			break;
 		case 'debian':
-			instructions=make_step('Run <span class="console">sudo apt-get install gnupg</span>',null);
+			instructions=make_step('Install GPG','Run <span class="console">sudo apt-get install gnupg</span>',null);
 			break;
 		case 'fedora':
-			instructions=make_step('Run <span class="console">sudo yum install gpg</span>','fedora_gpg_install');
+			instructions=make_step('Install GPG','Run <span class="console">sudo yum install gpg</span>','fedora_gpg_install');
 			break;
 		default:
 			instructions='';
@@ -66,15 +66,15 @@ function update_instructions() {
 	}
 	switch(client) {
 		case "thunderbird":
-			instructions = instructions + make_step('<a href="https://addons.mozilla.org/en-US/thunderbird/addon/enigmail/">Install Enigmail</a>','fedora_enigmail_install');
-			instructions = instructions + make_step('Choose OpenPGP -> Setup Wizard and follow the instructions. Signing emails is usually unnecessary so you may want to chose not to do that by default. You should chose to encrypt mail by default.','fedora_enigmail_setup');
-			instructions = instructions + make_step('Choose OpenPGP -> Key Management -> Keyserver -> Search for Keys. Search for the email addresses of your friends to see if they have published encryption keys.','fedora_enigmail_import');
-			instructions = instructions + make_step('(optional) Chose OpenPGP -> Key Management. Choose "Display All Keys by Default". Right click on your key and choose "Upload Pulbic Keys to Keyserver. Tell your friends to import the key you just published to the keyserver','fedora_enigmail_upload');
+			instructions = instructions + make_step('Install Engimail','Click on the menu button and choose "Add-ons". Type "enigmail" in the search field. Click the "Install" button next to Enigmail. Click the "Restart now" link.','fedora_enigmail_install');
+			instructions = instructions + make_step('Run Setup Wizard', 'Choose OpenPGP -> Setup Wizard and follow the instructions. Signing emails is usually unnecessary so you may want to chose not to do that by default. You should chose to encrypt mail by default.','fedora_enigmail_setup');
+			instructions = instructions + make_step('Import keys','Choose OpenPGP -> Key Management -> Keyserver -> Search for Keys. Search for the email addresses of your friends to see if they have published encryption keys.','fedora_enigmail_import');
+			instructions = instructions + make_step('Export keys','Choose OpenPGP -> Key Management. Choose "Display All Keys by Default". Right click on your key and choose "Upload Pulbic Keys to Keyserver. Tell your friends to import the key you just published to the keyserver','fedora_enigmail_upload');
 			break;
 		case 'chrome':
-			instructions = instructions + make_step('Install <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a>.','mailvelope_install');
-			instructions = instructions + make_step('Go to the <a href="http://sks-keyservers.net/i/#extract">SKS Keyservers</a> and type in the email address of one of your friends in the box marked "Search String". Click the on the link in the keyID column. Select all the text on the page, press the right mouse button and select "copy". Click the Mailvelope button next to the address bar and select "Options" and then "Import Keys". Click the text box with the right mouse button and select "Paste". Click "Submit".','mailvelope_import');
-			instructions = instructions + make_step('Click the Mailvelope button next the the address bar and select "Options" and then "Generate Key". Type in your name, e-mail address and a password. Click submit. Click "Display Keys". Select the key you just generated and click "Export" and "Display Public Key". Select all the text in the box, click with your right mouse button and select "Copy". Go to <a href="http://sks-keyservers.net/i/#submit">SKS Keyservers</a>, right click with your mouse on the text box and select "Paste". Click the "Submit this key to the keyserver!" button.','mailvelope_generate');
+			instructions = instructions + make_step('Install Mailvelope','Go to the <a href="https://chrome.google.com/webstore/detail/mailvelope/kajibbejlbohfaggdiogboambcijhkke">Mailvelope</a> page in the Chrome store. Click the "Add to Chrome" button.','mailvelope_install');
+			instructions = instructions + make_step('Import keys','Go to the <a href="http://sks-keyservers.net/i/#extract">SKS Keyservers</a> and type in the email address of one of your friends in the box marked "Search String". Click the on the link in the keyID column. Select all the text on the page, press the right mouse button and select "copy". Click the Mailvelope button next to the address bar and select "Options" and then "Import Keys". Click the text box with the right mouse button and select "Paste". Click "Submit".','mailvelope_import');
+			instructions = instructions + make_step('Generate and export key','Click the Mailvelope button next the the address bar and select "Options" and then "Generate Key". Type in your name, e-mail address and a password. Click submit. Click "Display Keys". Select the key you just generated and click "Export" and "Display Public Key". Select all the text in the box, click with your right mouse button and select "Copy". Go to <a href="http://sks-keyservers.net/i/#submit">SKS Keyservers</a>, right click with your mouse on the text box and select "Paste". Click the "Submit this key to the keyserver!" button.','mailvelope_generate');
 			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
