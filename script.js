@@ -44,8 +44,13 @@ function update_instructions() {
 	var clients = document.getElementById('client');
 	var client = clients.options[clients.selectedIndex].value;
 
+	// For analytics, consider disabling in the future
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.open('POST','analytics_'+os+'_'+client, true);
+	xmlhttp.send();
+
 	var instructions = '';
-	if(client !== 'chrome') { // All others need GPG to be instlled separately
+	if(client !== 'chrome') { // All others need GPG to be installed separately
 	switch(os) {
 		case 'windows':
 			instructions=make_step('Install GPG','<a href="http://gpg4win.org">Click here</a>',null);
