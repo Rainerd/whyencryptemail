@@ -47,7 +47,11 @@ function update_instructions() {
 	// For analytics, consider disabling in the future
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.open('POST','analytics_'+os+'_'+client, true);
-	xmlhttp.send();
+	try {
+		xmlhttp.send();
+	}
+	catch(err) {
+	}
 
 	var instructions = '';
 	if(client !== 'chrome') { // All others need GPG to be installed separately
@@ -96,5 +100,9 @@ function givefeedback(type) {
 	document.getElementById('feedback').innerHTML = 'Thank you for the feedback!';
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.open('POST','feedback_'+os+'_'+client+'_'+type,true);
-	xmlhttp.send();
+	try {
+		xmlhttp.send();
+	}
+	catch(err) {
+	}
 }
