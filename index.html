@@ -6,7 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css"></link>
 		<script src='script.js' type='text/javascript'></script>
 	</head>
-	<body onLoad='update_os(document.getElementById("operatingsystem"))'>
+	<body onLoad='update_os(document.getElementById("operatingsystem"))' onclick='show_video(null)'>
 		<span class='nb'>NB! This website is still under development and more instructions will be added. <a href='https://github.com/pafcu/whyencryptemail'>Please help.</a></span>
 		<div id='wrapper'>
 		<h1>It's not you, it's me: Why and how to encrypt email you send</h1>
@@ -49,7 +49,7 @@
 			<li id='generate_instruction'>(optional) Generate an encryption key so that others can send encrypted mail to you.</li>
 		</ol>
 		<div id='video'>
-		<video id='videoplayer' width="800" height="600" controls>
+		<video id='videoplayer' width="800" height="600" controls='controls' onclick='event.stopPropagation()'>
 			<source id='webmsrc' src="" type="video/webm">
 			<source id='mp4src' src="" type="video/mp4">
 			Your browser does not support the video tag.
