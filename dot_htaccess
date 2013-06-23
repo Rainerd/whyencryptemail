@@ -1,0 +1,19 @@
+# Example .htaccess file. Rename to .htaccess (although I have yet to figure out how to get this working on CentOS 6 and SSL)
+Options +FollowSymLinks
+RewriteEngine on
+
+# Allow missing .html, probably a common mistake that people type it in
+RewriteRule ^/keysearch.html$ /keysearch [QSA,R=301]
+
+# Allow AJAX calls to external keyserver by proxying
+RewriteRule ^/keyserver/sks\/(lookup.*)$ http://pool.sks-keyservers.net:11371/pks/$1 [P]
+
+# keysearch without a query string goes to httpd ...
+RewriteCond %{QUERY_STRING} ^$
+RewriteRule ^/keysearch$ keysearch/ [PT,L]
+
+# ... but with query to the import server. Confusing enough?
+RewriteRule ^/keysearch$ http://localhost:8080/callback$1 [P]
+
+# Also send anything else to the server that looks like it belongs there
+RewriteRule ^/keysearch/server_(.*)$ http://localhost:8080/$1 [P]
