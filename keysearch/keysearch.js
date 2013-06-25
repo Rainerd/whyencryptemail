@@ -18,6 +18,7 @@ function lookupAddresses(addresses) {
 // Once one key has been checked, a query for the next key is started
 // This is to make sure the server is not bombarded with queries (they get upset)
 // TODO: Probably OK to make a few queries at the same time
+// TODO: Would it be possible to use websockets instead of AJAX to avoid needing a proxy?
 function queryKey(addresses, index) {
 	var xmlhttp=new XMLHttpRequest();
 	// This requires a proxy rewrite by the webserver to work

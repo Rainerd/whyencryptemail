@@ -1,4 +1,4 @@
-// TODO: Get rid of px measurements. It will look bad/be unusble on many high-DPI devices.
+/* TODO: Get rid of px measurements. It will look bad/be unusble on many high-DPI devices. */
 #un_logo { float:left; height:90px; margin-right: 16px; }
 #postcard { float:right; height:90px; margin-left: 16px; }
 #toilet { float:left; height:90px; margin-right: 16px; }
