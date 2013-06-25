@@ -12,9 +12,9 @@ function make_step(title, instruction, video) {
 }
 
 str_windows_gpg_install = make_step('Install GPG','<a href="http://gpg4win.org">Click here</a>',null);
-osx_gpg_install = make_step('Install GPG','<a href="https://gpgtools.org/">Click here</a>',null);
-debian_gpg_install = make_step('Install GPG','Run <span class="console">sudo apt-get install gnupg</span>',null);
-fedora_gpg_install = make_step('Install GPG','Run <span class="console">sudo yum install gpg</span>','fedora_gpg_install');
+str_osx_gpg_install = make_step('Install GPG','<a href="https://gpgtools.org/">Click here</a>',null);
+str_debian_gpg_install = make_step('Install GPG','Run <span class="console">sudo apt-get install gnupg</span>',null);
+str_fedora_gpg_install = make_step('Install GPG','Run <span class="console">sudo yum install gpg</span>','fedora_gpg_install');
 
 
 str_thunderbird_instructions = make_step('Install Engimail','Click on the menu button and choose <span class="uiitem">Add-ons</span>. Type <span class="uiitem">enigmail</span> in the search field. Click the <span class="uiitem">Install</span> button next to Enigmail. Click the <span class="uiitem">Restart now</span> link.','fedora_enigmail_install')+
