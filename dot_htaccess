@@ -1,3 +1,5 @@
+DirectorySlash Off
+DirectoryIndex index index.html
 Options +FollowSymLinks
 RewriteEngine on
 RewriteBase /
@@ -10,12 +12,10 @@ RewriteRule ^keyserver/sks\/(lookup.*)$ http://pool.sks-keyservers.net:11371/pks
 #
 # keysearch without a query string goes to httpd ...
 RewriteCond %{QUERY_STRING} ^$
-RewriteRule ^keysearch$ keysearch_/ [PT]
+RewriteRule ^keysearch$ keysearch/ [PT]
 
 # ... but with query to the import server
 RewriteRule ^keysearch$ http://localhost:8080/callback$1 [P]
 
 # Also send anything else there that looks like it belongs there
 RewriteRule ^keysearch/server_(.*)$ http://localhost:8080/$1 [P]
-
-DirectoryIndex index
