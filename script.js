@@ -1,23 +1,46 @@
+function lookup(dict, key) {
+	for (i in dict) {
+		if(dict[i][0] === key) return dict[i][1];
+	}
+	return null;
+}
+
+function make_question(id, text, options, values, onchange) {
+	question = '';
+	question += '<span>'+text;
+	question += '<select onchange="'+onchange+'(this)" id="'+id+'">';
+	for (i in options) {
+		question += '<option value="'+values[i]+'">'+options[i]+'</option>';
+	}
+	question += '</select></span>';
+	return question;
+}
+
 function update_os(selected) {
 	var os = selected.options[selected.selectedIndex].value;
+	qs = document.getElementById('questions');
+	nodes = qs.childNodes;
+	for(i=1;i<nodes.length;i++) {
+		qs.removeChild(nodes[i]);
+	}
 	list_clients(os);
 	update_instructions();
 }
 
 // List valid clients for the given OS
 function list_clients(os) {
-	var clients = document.getElementById('client');
-	clients.options.length = 0;
-	clients.disabled = false;
-	if(os === 'windows' || os === 'osx' || os === 'debian' || os === 'fedora') {
-		clients.options[clients.options.length] = new Option('Thunderbird','thunderbird');
-		clients.options[clients.options.length] = new Option('Google Chrome / Chromium','chrome');
-	}
-	else {
-		clients.options[clients.options.length] = new Option('None available','none');
-		clients.disabled = true;
+	var clients = [];
+	var values = [];	
 
+	if(os === 'windows' || os === 'osx' || os === 'debian' || os === 'fedora') {
+		values.push('thunderbird');
+		clients.push(lookup(str_client_names,'thunderbird'));
+		values.push('chrome');
+		clients.push(lookup(str_client_names,'chrome'));
 	}
+	s = document.createElement('span');
+	s.innerHTML = make_question('client', str_client_question, clients, values, 'update_instructions');
+	document.getElementById('questions').appendChild(s);
 }
 
 function show_video(video) {
@@ -96,4 +119,10 @@ function givefeedback(type) {
 	}
 	catch(err) {
 	}
+}
+function init() {
+	questions = ''
+	questions += make_question('operatingsystem',str_os_question,str_os_names,['windows','osx','debian','fedora'],'update_os');
+	document.getElementById('questions').innerHTML = questions;
+	update_os(document.getElementById("operatingsystem"));
 }

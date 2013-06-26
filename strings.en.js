@@ -28,3 +28,9 @@ make_step('Import keys','Go to the <a href="https://sks-keyservers.net/i/#extrac
 make_step('Generate and export key','Click the Mailvelope button next the the address bar and select <span class="uiitem">Options</span> and then <span class="uiitem">Generate Key</span>. Type in your name, e-mail address and a password. Click submit. Click <span class="uiitem">Display Keys</span>. Select the key you just generated and click <span class="uiitem">Export</span> and <span class="uiitem">Display Public Key</span>. Select all the text in the box, click with your right mouse button and select <span class="uiitem">Copy</span>. Go to <a href="https://sks-keyservers.net/i/#submit">SKS Keyservers</a>, right click with your mouse on the text box and select <span class="uiitem">Paste</span>. Click the <span class="uiitem">Submit this key to the keyserver!</span> button.','mailvelope_generate');
 
 str_thank_you = 'Thank you for the feedback!';
+
+str_os_question = 'Pick your operating system';
+str_os_names = ['Windows','OS X', 'Ubuntu or Debian GNU/Linux','Fedora']
+
+str_client_question = 'Pick your mail application';
+str_client_names = [['thunderbird','Thunderbird'],['chrome','Google Chrome / Chromium']];
