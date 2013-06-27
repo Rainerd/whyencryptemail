@@ -1,13 +1,13 @@
 str_show_me = 'Show me';
 
 // Generate a <li> with title, instruction and video link
-// This function really doesn't belong here
+// This function really doesn't belong here, but otherwise it would have to be placed in a file of it's own
 function make_step(title, instruction, video) {
 	instruction = '<li><span class="instructiontitle">'+title+':</span> ' + instruction;
 	if(video != null) {
-		instruction = instruction +' (<a href="javascript:show_video(\''+video+'\')">'+str_show_me+'</a>)';
+		instruction += ' (<a href="javascript:show_video(\''+video+'\')">'+str_show_me+'</a>)';
 	}
-	instruction = instruction + '</li>'
+	instruction += '</li>'
 	return instruction;
 }
 
