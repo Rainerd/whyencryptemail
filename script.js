@@ -9,9 +9,11 @@ function list_clients(os) {
 	var clients = document.getElementById('client');
 	clients.options.length = 0;
 	clients.disabled = false;
-	if(os === 'windows' || os === 'osx' || os === 'debian' || os === 'fedora') {
+	if(os === 'windows' || os === 'debian' || os === 'fedora') {
 		clients.options[clients.options.length] = new Option('Thunderbird','thunderbird');
 		clients.options[clients.options.length] = new Option('Google Chrome / Chromium','chrome');
+	} else if(os === 'osx') {
+		clients.options[clients.options.length] = new Option('Mail','applemail');
 	}
 	else {
 		clients.options[clients.options.length] = new Option('None available','none');
@@ -75,6 +77,9 @@ function update_instructions() {
 		case 'chrome':
 			instructions += str_chrome_instructions;
 			break;
+        case 'applemail':
+            instructions += str_applemail_instructions;
+            break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
 }
