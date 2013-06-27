@@ -1,6 +1,6 @@
+Options +Indexes +FollowSymLinks +MultiViews
 DirectorySlash Off
 DirectoryIndex index index.html
-Options +FollowSymLinks
 RewriteEngine on
 RewriteBase /
 
