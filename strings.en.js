@@ -38,4 +38,8 @@ str_os_question = 'Pick your operating system';
 str_os_names = ['Windows','OS X', 'Ubuntu or Debian GNU/Linux','Fedora']
 
 str_client_question = 'Pick your mail application';
-str_client_names = [['thunderbird','Thunderbird'],['chrome','Google Chrome / Chromium']];
+str_client_names = [['thunderbird','Thunderbird'],['gmail','GMail'],['outlookcom','Outlook.com'],['yahoo','Yahoo Mail'],['gmx','GMX'],['applemail','Mail']];
+
+str_browser_question = 'Pick your web browser';
+
+str_browser_names = [['chrome','Google Chrome / Chromium']];
