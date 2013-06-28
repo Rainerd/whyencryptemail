@@ -1,3 +1,4 @@
+// Fake dictionary lookup. We have so few elements that a real one isn't needed.
 function lookup(dict, key) {
 	for (i in dict) {
 		if(dict[i][0] === key) return dict[i][1];
@@ -5,21 +6,25 @@ function lookup(dict, key) {
 	return null;
 }
 
-function make_question(id, text, options, values, onchange) {
+
+function make_question(id, text, option_names, option_ids, onchange) {
 	question = '';
 	question += '<span>'+text;
 	question += '<select onchange="'+onchange+'(this)" id="'+id+'">';
 	for (i in options) {
-		question += '<option value="'+values[i]+'">'+options[i]+'</option>';
+		question += '<option value="'+option_ids[i]+'">'+option_names[i]+'</option>';
 	}
 	question += '</select></span>';
 	return question;
 }
 
+// A new OS has been picked
 function update_os(selected) {
 	var os = selected.options[selected.selectedIndex].value;
 	qs = document.getElementById('questions');
 	nodes = qs.childNodes;
+
+	// Remove all questions except the first one
 	for(i=1;i<nodes.length;i++) {
 		qs.removeChild(nodes[i]);
 	}
@@ -29,17 +34,18 @@ function update_os(selected) {
 
 // List valid clients for the given OS
 function list_clients(os) {
-	var clients = [];
-	var values = [];	
+	var client_names = [];
+	var clinet_ids = [];	
 
 	if(os === 'windows' || os === 'osx' || os === 'debian' || os === 'fedora') {
-		values.push('thunderbird');
-		clients.push(lookup(str_client_names,'thunderbird'));
-		values.push('chrome');
-		clients.push(lookup(str_client_names,'chrome'));
+		client_ids.push('thunderbird');
+		client_names.push(lookup(str_client_names,'thunderbird'));
+		client_ids.push('chrome');
+		client_names.push(lookup(str_client_names,'chrome'));
 	}
+	// If we use .innerHTML directly on the questions-element weird things seem to happen
 	s = document.createElement('span');
-	s.innerHTML = make_question('client', str_client_question, clients, values, 'update_instructions');
+	s.innerHTML = make_question('client', str_client_question, client_names, client_ids, 'update_instructions');
 	document.getElementById('questions').appendChild(s);
 }
 
@@ -56,13 +62,7 @@ function show_video(video) {
         }
 }
 
-function update_instructions() {
-	var operatingsystems = document.getElementById('operatingsystem');
-	var os = operatingsystems.options[operatingsystems.selectedIndex].value;
-	var clients = document.getElementById('client');
-	var client = clients.options[clients.selectedIndex].value;
-
-	// For analytics, consider disabling in the future
+function post_analytics(os,client) {
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.open('POST','analytics_'+os+'_'+client, true);
 	try {
@@ -71,25 +71,33 @@ function update_instructions() {
 	catch(err) {
 	}
 
+}
+function update_instructions() {
+	var operatingsystems = document.getElementById('operatingsystem');
+	var os = operatingsystems.options[operatingsystems.selectedIndex].value;
+	var clients = document.getElementById('client');
+	var client = clients.options[clients.selectedIndex].value;
+
+	post_analytics(os, client);
 	var instructions = '';
 	if(client !== 'chrome') { // All others need GPG to be installed separately
-	switch(os) {
-		case 'windows':
-			instructions=str_windows_gpg_install;
-			break;
-		case 'osx':
-			instructions=str_osx_gpg_install;
-			break;
-		case 'debian':
-			instructions=str_debian_gpg_install;
-			break;
-		case 'fedora':
-			instructions=str_fedora_gpg_install;
-			break;
-		default:
-			instructions='';
-			break;
-	}
+		switch(os) {
+			case 'windows':
+				instructions = str_windows_gpg_install;
+				break;
+			case 'osx':
+				instructions = str_osx_gpg_install;
+				break;
+			case 'debian':
+				instructions = str_debian_gpg_install;
+				break;
+			case 'fedora':
+				instructions = str_fedora_gpg_install;
+				break;
+			default:
+				instructions='';
+				break;
+		}
 	}
 	switch(client) {
 		case "thunderbird":
@@ -120,6 +128,7 @@ function givefeedback(type) {
 	catch(err) {
 	}
 }
+
 function init() {
 	questions = ''
 	questions += make_question('operatingsystem',str_os_question,str_os_names,['windows','osx','debian','fedora'],'update_os');
