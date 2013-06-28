@@ -33,3 +33,13 @@ make_step('Generate and export key','Click the Mailvelope button next the the ad
 str_applemail_instructions = make_step('Send encrypted e-mail','In Mail, create a new message as usual. Click on the <span class="uiitem">lock</span> icon to encrypt and the <span class="uiitem">star</span> icon next to it to sign the message. Hit the send button when done.','osx_gpgtools_mail_send');
 
 str_thank_you = 'Thank you for the feedback!';
+
+str_os_question = 'Pick your operating system';
+str_os_names = ['Windows','OS X', 'Ubuntu or Debian GNU/Linux','Fedora']
+
+str_client_question = 'Pick your mail application';
+str_client_names = [['thunderbird','Thunderbird'],['gmail','GMail'],['outlookcom','Outlook.com'],['yahoo','Yahoo Mail'],['gmx','GMX'],['applemail','Mail']];
+
+str_browser_question = 'Pick your web browser';
+
+str_browser_names = [['chrome','Google Chrome / Chromium']];

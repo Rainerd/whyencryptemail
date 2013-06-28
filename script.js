@@ -1,25 +1,108 @@
+// Fake dictionary lookup. We have so few elements that a real one isn't needed.
+function lookup(dict, key) {
+	for (i in dict) {
+		if(dict[i][0] === key) return dict[i][1];
+	}
+	return null;
+}
+
+function get_answer(question_id) {
+	var tmp = document.getElementById(question_id);
+	return tmp.options[tmp.selectedIndex].value;
+}
+
+function remove_questions(starting_from) {
+	var questions = document.getElementById('questions');
+	var nodes = questions.childNodes;
+	var nodecount = nodes.length;
+	while(questions.childNodes.length > starting_from + 1) {
+		questions.removeChild(questions.lastChild);
+	}
+}
+
+
+function add_question(id, text, option_names, option_ids, onchange) {
+	s = document.createElement('span');
+	s.setAttribute('class','question');
+
+	question = text;
+	question += '<select onchange="'+onchange+'(this)" id="'+id+'">';
+	for (i in option_names) {
+		question += '<option value="'+option_ids[i]+'">'+option_names[i]+'</option>';
+	}
+	question += '</select><br/>';
+	s.innerHTML = question;
+	document.getElementById('questions').appendChild(s);
+}
+
+// A new OS has been picked
 function update_os(selected) {
-	var os = selected.options[selected.selectedIndex].value;
+	var os = get_answer('operatingsystem');
+	remove_questions(1);
 	list_clients(os);
-	update_instructions();
 }
 
 // List valid clients for the given OS
 function list_clients(os) {
-	var clients = document.getElementById('client');
-	clients.options.length = 0;
-	clients.disabled = false;
-	if(os === 'windows' || os === 'debian' || os === 'fedora') {
-		clients.options[clients.options.length] = new Option('Thunderbird','thunderbird');
-		clients.options[clients.options.length] = new Option('Google Chrome / Chromium','chrome');
-	} else if(os === 'osx') {
-		clients.options[clients.options.length] = new Option('Mail','applemail');
-	}
-	else {
-		clients.options[clients.options.length] = new Option('None available','none');
-		clients.disabled = true;
+	var client_names = [];
+	var client_ids = [];	
+
+	if(os === 'windows' || os === 'debian' || os === 'fedora' || os === 'osx') {
+		client_ids.push('thunderbird');
+		client_names.push(lookup(str_client_names,'thunderbird'));
+
+		client_ids.push('webmail');
+		client_names.push(lookup(str_client_names,'gmail'));
+
+		client_ids.push('webmail');
+		client_names.push(lookup(str_client_names,'outlookcom'));
+
+		client_ids.push('webmail');
+		client_names.push(lookup(str_client_names,'yahoo'));
+
+		client_ids.push('webmail');
+		client_names.push(lookup(str_client_names,'gmx'));
 
 	}
+        if(os === 'osx') {
+		client_ids.push('applemail');
+		client_names.push(lookup(str_client_names,'applemail'));
+	}
+
+	// If we use .innerHTML directly on the questions-element weird things seem to happen
+	add_question('client', str_client_question, client_names, client_ids, 'update_clients');
+	update_clients();
+}
+
+function update_clients(selected) {
+	var os = get_answer('operatingsystem');
+	var client = get_answer('client');
+	remove_questions(2);
+
+	if(client === 'webmail') {
+		list_browsers(os, client);
+	}
+	else {
+		update_instructions(os,client);
+	}
+
+}
+
+function list_browsers(os, client) {
+	var browser_names = [];
+	var browser_ids = [];
+
+	if(os === 'windows' || os === 'osx' || os === 'debian' || os === 'fedora') {
+		browser_names.push(lookup(str_browser_names,'chrome'));
+		browser_ids.push('chrome');
+	}
+	add_question('browser', str_browser_question, browser_names, browser_ids, 'update_browser');
+	update_browser();
+
+}
+
+function update_browser(selected) {
+	update_instructions();
 }
 
 function show_video(video) {
@@ -35,13 +118,8 @@ function show_video(video) {
         }
 }
 
-function update_instructions() {
-	var operatingsystems = document.getElementById('operatingsystem');
-	var os = operatingsystems.options[operatingsystems.selectedIndex].value;
-	var clients = document.getElementById('client');
-	var client = clients.options[clients.selectedIndex].value;
-
-	// For analytics, consider disabling in the future
+// TODO: This should be fixed to also send other answers
+function post_analytics(os, client) {
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.open('POST','analytics_'+os+'_'+client, true);
 	try {
@@ -50,36 +128,50 @@ function update_instructions() {
 	catch(err) {
 	}
 
+}
+function update_instructions() {
+	var os = get_answer('operatingsystem');
+	var operatingsystems = document.getElementById('operatingsystem');
+	var os = operatingsystems.options[operatingsystems.selectedIndex].value;
+	var clients = document.getElementById('client');
+	var client = clients.options[clients.selectedIndex].value;
+	post_analytics(os, client);
 	var instructions = '';
-	if(client !== 'chrome') { // All others need GPG to be installed separately
-	switch(os) {
-		case 'windows':
-			instructions=str_windows_gpg_install;
-			break;
-		case 'osx':
-			instructions=str_osx_gpg_install;
-			break;
-		case 'debian':
-			instructions=str_debian_gpg_install;
-			break;
-		case 'fedora':
-			instructions=str_fedora_gpg_install;
-			break;
-		default:
-			instructions='';
-			break;
-	}
+	if(client !== 'webmail') { // All others need GPG to be installed separately
+		switch(os) {
+			case 'windows':
+				instructions = str_windows_gpg_install;
+				break;
+			case 'osx':
+				instructions = str_osx_gpg_install;
+				break;
+			case 'debian':
+				instructions = str_debian_gpg_install;
+				break;
+			case 'fedora':
+				instructions = str_fedora_gpg_install;
+				break;
+			default:
+				instructions='';
+				break;
+		}
 	}
 	switch(client) {
-		case "thunderbird":
+		case 'thunderbird':
 			instructions += str_thunderbird_instructions;
 			break;
-		case 'chrome':
-			instructions += str_chrome_instructions;
+		case 'webmail':
+			var browsers = document.getElementById('browser');
+			var browser = browsers.options[browsers.selectedIndex].value;
+			switch(browser) {
+				case 'chrome':
+					instructions += str_chrome_instructions;
+					break;
+			}
 			break;
-        case 'applemail':
-            instructions += str_applemail_instructions;
-            break;
+		case 'applemail':
+			instructions += str_applemail_instructions;
+			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
 }
@@ -101,4 +193,9 @@ function givefeedback(type) {
 	}
 	catch(err) {
 	}
+}
+
+function init() {
+	add_question('operatingsystem',str_os_question,str_os_names,['windows','osx','debian','fedora'],'update_os');
+	update_os(document.getElementById('operatingsystem'));
 }
