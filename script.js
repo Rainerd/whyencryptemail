@@ -11,7 +11,7 @@ function make_question(id, text, option_names, option_ids, onchange) {
 	question = '';
 	question += '<span>'+text;
 	question += '<select onchange="'+onchange+'(this)" id="'+id+'">';
-	for (i in options) {
+	for (i in option_names) {
 		question += '<option value="'+option_ids[i]+'">'+option_names[i]+'</option>';
 	}
 	question += '</select></span>';
@@ -35,14 +35,18 @@ function update_os(selected) {
 // List valid clients for the given OS
 function list_clients(os) {
 	var client_names = [];
-	var clinet_ids = [];	
+	var client_ids = [];	
 
-	if(os === 'windows' || os === 'osx' || os === 'debian' || os === 'fedora') {
-		client_ids.push('thunderbird');
+	if(os === 'windows' || os === 'debian' || os === 'fedora') {
 		client_names.push(lookup(str_client_names,'thunderbird'));
+		client_ids.push('thunderbird');
 		client_ids.push('chrome');
 		client_names.push(lookup(str_client_names,'chrome'));
+	} else if(os === 'osx') {
+		client_names.push(lookup(str_client_names,'applemail'));
+		client_ids.push('applemail');
 	}
+
 	// If we use .innerHTML directly on the questions-element weird things seem to happen
 	s = document.createElement('span');
 	s.innerHTML = make_question('client', str_client_question, client_names, client_ids, 'update_instructions');
@@ -105,6 +109,9 @@ function update_instructions() {
 			break;
 		case 'chrome':
 			instructions += str_chrome_instructions;
+			break;
+		case 'applemail':
+			instructions += str_applemail_instructions;
 			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
