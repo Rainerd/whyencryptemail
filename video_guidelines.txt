@@ -1,0 +1,9 @@
+Some things to think about when recording screencasts. Please note that many of the existing videos break these because of the inexperience of the authors.
+
+- Record video in 800x600 to maintain a decent file size. Adjust your desktop resolution accordingly. Simply recording your full desktop and then resizing it will result in very tiny text.
+- Provide recordings in both .mp4 and .webm format. It is usually a good idea to record in a lossless format (e.g. y4m) and then convert to these formats later.
+- Move the mouse slowly, hover a while over buttons before clicking.
+- If possible, enable setting that clearly show when you click (e.g. Mouse Click Animation Desktop Effect in KDE).
+- Avoid using the keyboard (pressing Enter instead of clicking OK, pressing tab to move to the next field). It may be confusing for people what happened since keypresses are not visible in the video.
+- To be consistent, please use john@example.org and jane@example.org as the discussion partners. For webmail services this is normally not possible, so use some other variant. Usually they are talking about going to lunch. In particular, do not use an example that involves some secret activity, as this may imply that encryption is only needed to hide secrets.
+- It usually takes a while to get a good video. Practice, practice.
