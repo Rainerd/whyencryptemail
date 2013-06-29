@@ -48,8 +48,10 @@ function list_clients(os) {
 	var client_ids = [];	
 
 	if(os === 'windows' || os === 'debian' || os === 'fedora' || os === 'osx') {
-		client_ids.push('thunderbird');
-		client_names.push(lookup(str_client_names,'thunderbird'));
+		if(os !== 'osx') {
+			client_ids.push('thunderbird');
+			client_names.push(lookup(str_client_names,'thunderbird'));
+		}
 
 		client_ids.push('webmail');
 		client_names.push(lookup(str_client_names,'gmail'));
