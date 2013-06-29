@@ -7,7 +7,7 @@
 		<script src='strings.en.js' type='text/javascript'></script>
 		<script src='script.js' type='text/javascript'></script>
 	</head>
-	<body onLoad='update_os(document.getElementById("operatingsystem"))' onclick='show_video(null)'>
+	<body onLoad='init()' onclick='show_video(null)'>
 		<span class='nb'>NB! This website is still under development and more instructions will be added. <a href='https://github.com/pafcu/whyencryptemail'>Please help.</a></span>
 		<div id='wrapper'>
 		<h1>It's not you, it's me: Why and how to encrypt email you send</h1>
@@ -22,27 +22,8 @@
 		<p><img src='img/Archie_Mahatma_Gandhi' id='gandhi' alt='Image of Mahatma Gandhi'/>But there are also people who really <em>need</em> privacy in their communication. Think of e.g. peaceful activists who might be spied on by governments to make their lives more difficult. By protecting <em>all</em> mail, it makes it more difficult for governments to identify and harass people who actually do need the protection.</p>
 		<h2>What you should do</h2>
 		<p>Setting up encryption requires about 30 minutes and may seem slightly technical. However, after following the instructions below, sending encrypted email is almost as easy as sending unencrypted email.</p>
-		<form>
-			<span id='ospicker'>
-			Pick your operating system:
-			<select id='operatingsystem' onChange='update_os(this)'> <!-- TODO: Add icons that people recognize -->
-				<option value='windows'>Windows</option>
-				<option value='osx'>OS X</option>
-				<option value='debian'>Ubuntu or Debian GNU/Linux</option>
-				<option value='fedora'>Fedora Linux</option>
-			</select>
-			</span>
-			<span id='clientpicker'>
-			Pick your email application:
-			<select id='client' onChange='update_instructions()'>
-			</select>
-			</span>
-			<span id='browserpicker' style='display:none'>
-			Pick your web browser:
-			<select id='browser' onChange='update_browser(this)'>
-			</select>
-			</span>
-		</form>
+		<div id='questions'>
+		</div>
 		<ol id='instructions'>
 			<li id='download_instruction'>Download GPG</li>
 			<li id='configure_instruction'>Configure your client</li>
