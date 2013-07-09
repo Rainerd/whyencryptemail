@@ -24,6 +24,7 @@ function remove_questions(starting_from) {
 function add_question(id, text, option_names, option_ids, onchange) {
 	s = document.createElement('span');
 	s.setAttribute('class','question');
+	alert(option_names.length);
 
 	question = text;
 	question += '<select onchange="'+onchange+'(this)" id="'+id+'">';
@@ -73,6 +74,10 @@ function list_clients(os) {
 	if(os === 'fedora') {
 		client_ids.push('generic');
 		client_names.push(lookup(str_client_names,'generic'));
+	}
+	if(os === 'android') {
+		client_ids.push('k9mail');
+		client_names.push(lookup(str_client_names,'k9mail'));
 	}
 
 	// If we use .innerHTML directly on the questions-element weird things seem to happen
@@ -143,7 +148,7 @@ function update_instructions() {
 	var client = clients.options[clients.selectedIndex].value;
 	post_analytics(os, client);
 	var instructions = '';
-	if(client !== 'webmail' || ((os === 'debian' || os === 'fedora') && client === 'generic')) { // All others need GPG to be installed separately
+	if(client === 'thunderbird' || client === 'applemail') {
 		switch(os) {
 			case 'windows':
 				instructions = str_windows_gpg_install;
@@ -183,6 +188,9 @@ function update_instructions() {
 				instructions += str_kgpg_instructions;
 			}
 			break;
+		case 'k9mail':
+			instructions += str_k9mail_instructions;
+			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
 }
@@ -207,6 +215,6 @@ function givefeedback(type) {
 }
 
 function init() {
-	add_question('operatingsystem',str_os_question,str_os_names,['windows','osx','debian','fedora'],'update_os');
+	add_question('operatingsystem',str_os_question,str_os_names,['windows','osx','debian','fedora','android'],'update_os');
 	update_os(document.getElementById('operatingsystem'));
 }
