@@ -24,7 +24,6 @@ function remove_questions(starting_from) {
 function add_question(id, text, option_names, option_ids, onchange) {
 	s = document.createElement('span');
 	s.setAttribute('class','question');
-	alert(option_names.length);
 
 	question = text;
 	question += '<select onchange="'+onchange+'(this)" id="'+id+'">';
