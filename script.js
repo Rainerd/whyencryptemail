@@ -70,6 +70,10 @@ function list_clients(os) {
 		client_ids.push('applemail');
 		client_names.push(lookup(str_client_names,'applemail'));
 	}
+	if(os === 'fedora') {
+		client_ids.push('generic');
+		client_names.push(lookup(str_client_names,'generic'));
+	}
 
 	// If we use .innerHTML directly on the questions-element weird things seem to happen
 	add_question('client', str_client_question, client_names, client_ids, 'update_clients');
@@ -139,7 +143,7 @@ function update_instructions() {
 	var client = clients.options[clients.selectedIndex].value;
 	post_analytics(os, client);
 	var instructions = '';
-	if(client !== 'webmail') { // All others need GPG to be installed separately
+	if(client !== 'webmail' || ((os === 'debian' || os === 'fedora') && client === 'generic')) { // All others need GPG to be installed separately
 		switch(os) {
 			case 'windows':
 				instructions = str_windows_gpg_install;
@@ -173,6 +177,11 @@ function update_instructions() {
 			break;
 		case 'applemail':
 			instructions += str_applemail_instructions;
+			break;
+		case 'generic':
+			if(os === 'fedora') {
+				instructions += str_kgpg_instructions;
+			}
 			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
