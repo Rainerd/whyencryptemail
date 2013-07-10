@@ -69,6 +69,12 @@ function handleFileSelect(evt) {
 		reader.readAsText(f);
 	}
 }
+function init() {
+	loadCached();
+	if(!window.FileReader) {
+		document.getElemebyId('file').disabled = true;
+	}
+}
 function loadCached() {
 	// Restore saved results so we don't need to query again when e.g. the back button is pressed
 	if(document.referrer.indexOf('accounts.google.com') < 0 && sessionStorage.lookupResults) {

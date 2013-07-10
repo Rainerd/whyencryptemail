@@ -53,7 +53,6 @@ function list_clients(os) {
 		client_names.push(lookup(str_client_names,'thunderbird'));
 	}
 	if(os === 'windows' || os === 'debian' || os === 'fedora' || os === 'osx') {
-
 		client_ids.push('webmail');
 		client_names.push(lookup(str_client_names,'gmail'));
 

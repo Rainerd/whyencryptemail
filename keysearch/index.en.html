@@ -6,32 +6,37 @@
 		<link rel='stylesheet' type='text/css' href='style.css'/>
 		<script src='keysearch/keysearch.js' type='text/javascript'></script>
 	</head>
-	<body onload='loadCached()'>
+	<body onload='init()'>
 		<!-- Needed to cover our asses from EU regulations. TODO: Investigate what is actually needed and where. Current host is in Germany. -->
 		<span id='cookie_info' class='nb'>Search results may be stored on your computer to avoid repeated queries. Continued use implies consent.</span>
 		<div id='wrapper'>
 		<h1>Search for keys</h1>
 		<p>
 			Checking who of your contacts already have published encryption keys can be tedious. This page aims to make the process a little simpler.
-		<h2>Direct import</h2>
-		<p>
-			If you are using any of the mail services listed below, simply click the corresponding icon to check if your contacts have published encryption keys.
 		</p>
 		<div id='direct_imports'>
+			<h2>Direct import</h2>
+			<p>
+				If you are using any of the mail services listed below, simply click the corresponding icon to check if your contacts have published encryption keys.
+			</p>
 			<span class='import_logo' id='google_import'><a href='keysearch/server_gmail_import'><img src='img/Gmail_Logo' alt='GMail logo'/></a></span>
 			<span class='import_logo' id='yahoo_import'><a href='keysearch/server_yahoo_import'><img src='img/Yahoo' alt='Yahoo logo'/></a></span>
 		</div>
-		<h2>Upload CSV addressbook</h2>
-		<p>
-			Many mail applications, such as GMail, Yahoo, outlook.com and Outlook allow you to <a href='https://support.google.com/mail/answer/12118?hl=en&ref_topic=1669027'>export</a> your contacts in .csv-format. You can check who of your contacts are already using mail encryption by uploading your exported address book below. (Don't worry, it's not saved on our server)
-		</p>
-		<input type='file' name='files[]' multiple onchange='handleFileSelect(event)'/>
-		<h2>Write in email addresses</h2>
-		<p>
-			Write some email addresses in the box below and click <span class='uiitem'>Search</span>.
-		<p>
-		<textarea id='writein' cols='80' rows='3'></textarea><br/>
-		<button value='Search' onclick='searchWritein()'>Search</button>
+		<div id='upload_div'>
+			<h2>Upload CSV addressbook</h2>
+			<p>
+				Many mail applications, such as GMail, Yahoo, outlook.com and Outlook allow you to <a href='https://support.google.com/mail/answer/12118?hl=en&ref_topic=1669027'>export</a> your contacts in .csv-format. You can check who of your contacts are already using mail encryption by uploading your exported address book below. (Don't worry, it's not saved on our server)
+			</p>
+			<input id='file' type='file' name='files[]' multiple onchange='handleFileSelect(event)'/>
+		</div>
+		<div id='writein_div'>
+			<h2>Write in email addresses</h2>
+			<p>
+				Write some email addresses in the box below and click <span class='uiitem'>Search</span>.
+			<p>
+			<textarea id='writein' cols='80' rows='3'></textarea><br/>
+			<button value='Search' onclick='searchWritein()'>Search</button>
+		</div>
 		<!-- TODO: Investigate if it would be better to show results inline or on maybe even on a new page. -->
 		<div id='search_results' style='display:none'>
 			<h3>Search results: <span id='loading_indicator'>(Checking <span id='count'></span> more)</span></h3>
