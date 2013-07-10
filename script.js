@@ -8,6 +8,7 @@ function lookup(dict, key) {
 
 function get_answer(question_id) {
 	var tmp = document.getElementById(question_id);
+	if(tmp == null) alert(question_id);
 	return tmp.options[tmp.selectedIndex].value;
 }
 
@@ -24,7 +25,6 @@ function remove_questions(starting_from) {
 function add_question(id, text, option_names, option_ids, onchange) {
 	s = document.createElement('span');
 	s.setAttribute('class','question');
-	alert(option_names.length);
 
 	question = text;
 	question += '<select onchange="'+onchange+'(this)" id="'+id+'">';
@@ -39,7 +39,7 @@ function add_question(id, text, option_names, option_ids, onchange) {
 // A new OS has been picked
 function update_os(selected) {
 	var os = get_answer('operatingsystem');
-	remove_questions(1);
+	remove_questions(2);
 	list_clients(os);
 }
 
@@ -48,9 +48,11 @@ function list_clients(os) {
 	var client_names = [];
 	var client_ids = [];	
 
-	if(os === 'windows' || os === 'debian' || os === 'fedora' || os === 'osx') {
+	if(os === 'windows' || os === 'debian' || os === 'fedora') {
 		client_ids.push('thunderbird');
 		client_names.push(lookup(str_client_names,'thunderbird'));
+	}
+	if(os === 'windows' || os === 'debian' || os === 'fedora' || os === 'osx') {
 
 		client_ids.push('webmail');
 		client_names.push(lookup(str_client_names,'gmail'));
@@ -86,7 +88,7 @@ function list_clients(os) {
 function update_clients(selected) {
 	var os = get_answer('operatingsystem');
 	var client = get_answer('client');
-	remove_questions(2);
+	remove_questions(3);
 
 	if(client === 'webmail') {
 		list_browsers(os, client);
@@ -111,6 +113,9 @@ function list_browsers(os, client) {
 }
 
 function update_browser(selected) {
+	update_instructions();
+}
+function update_haskey() {
 	update_instructions();
 }
 
@@ -140,10 +145,9 @@ function post_analytics(os, client) {
 }
 function update_instructions() {
 	var os = get_answer('operatingsystem');
-	var operatingsystems = document.getElementById('operatingsystem');
-	var os = operatingsystems.options[operatingsystems.selectedIndex].value;
-	var clients = document.getElementById('client');
-	var client = clients.options[clients.selectedIndex].value;
+	var client = get_answer('client');
+	var haskey = get_answer('haskey');
+
 	post_analytics(os, client);
 	var instructions = '';
 	if(client === 'thunderbird' || client === 'applemail') {
@@ -167,7 +171,14 @@ function update_instructions() {
 	}
 	switch(client) {
 		case 'thunderbird':
-			instructions += str_thunderbird_instructions;
+			instructions += str_thunderbird_commonsetup;
+			if(haskey === 'yes') {
+				instructions += str_thunderbird_haskey;
+			}
+			else {
+				instructions += str_thunderbird_firstkey;
+			}
+			instructions += str_thunderbird_usage;
 			break;
 		case 'webmail':
 			var browsers = document.getElementById('browser');
@@ -212,7 +223,9 @@ function givefeedback(type) {
 	}
 }
 
+
 function init() {
+	add_question('haskey',str_haskey_question, str_noyes, ['no','yes'],'update_haskey');
 	add_question('operatingsystem',str_os_question,str_os_names,['windows','osx','debian','fedora','android'],'update_os');
 	update_os(document.getElementById('operatingsystem'));
 }

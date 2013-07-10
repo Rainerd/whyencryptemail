@@ -15,5 +15,6 @@ body { text-align: center; background:#f0f0f0; }
 .instructiontitle { font-weight: bold; }
 .import_logo { padding-right: 16px; }
 .uiitem { font-style: italic; }
+.important { font-weight: bold; }
 
 .import_logo img { height: 64px; }
