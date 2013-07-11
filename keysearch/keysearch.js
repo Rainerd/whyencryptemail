@@ -1,5 +1,4 @@
 gloading = 0;
-gstorage = true; // TODO: Detect and handle missing storage
 // Search for email adddresses in a text
 function scanForAddresses(text) {
 	// TODO: This RegEx is probably way too simple
@@ -10,6 +9,7 @@ function lookupAddresses(addresses) {
 	document.getElementById('search_results').style.display = 'block';
 	window.location='#search_results';
 	document.getElementById('loading_indicator').style.display = 'inline';
+	document.getElementById('download_link').style.display = 'none';
 	gloading += addresses.length;
 	queryKey(addresses, 0);
 }
@@ -23,26 +23,41 @@ function queryKey(addresses, index) {
 	var xmlhttp=new XMLHttpRequest();
 	// This requires a proxy rewrite by the webserver to work
 	// This is due to cross-domain AJAX being forbidden
-	var query = '/keyserver/sks/lookup?op=index&exact=on&search='+addresses[index];
-	//
-	// Use actual keyserver URL in links instead of our fake one
-	var actual_url = 'http://pool.sks-keyservers.net:11371/pks/lookup?op=index&exact=on&search='+addresses[index];
+	var query = '/keyserver/sks/lookup?op=index&options=mr&exact=on&search='+addresses[index];
 
 	xmlhttp.onreadystatechange=function() {
 		if(xmlhttp.readyState==4 && xmlhttp.status==200) {
-			// Sucessfully retrieved key, append the email address to the results list
-			// TODO: Check that the result actually corresponds to what we wanted, apparently not even exact=on is enough :-(
-			// TODO: Consider showing some more info about the key too
-			document.getElementById('results').innerHTML += '<li><a href="'+actual_url+'">'+addresses[index]+'</a>';
+			var response = xmlhttp.responseText;
+			keys = response.split('\npub:');
+			// TODO: Check that all the servers actually return machine readable data
+			// At least some return HTML for the actual key :-(
+			// Check if there is the optional info line and skip it
+			// Not tested without info line
+			add = 0;
+			if(keys[0].split(':')[0] == 'info') add = 1;
+			for(ikey=add; ikey<keys.length;ikey++) {
+				var keyid = keys[ikey].split(':')[0];
+				var uids = keys[ikey].split('\nuid:')
+				for(iuid=1; iuid<uids.length;iuid++) {
+					var uid = uids[iuid].split(':')[0];
+					// TODO: Check expiration. But it seems like it is not actually included in result (server bug?)
+					if(uid.indexOf('<'+addresses[index]+'>') > -1) {
+						var keyurl = '/keyserver/sks/lookup?op=get&options=mr&exact=on&search=0x'+keyid;
+						// Found a valid key
+						document.getElementById('results').innerHTML += '<li><input type="checkbox" class="keyselect" checked="checked" onchange="key_selected()" id="'+keyid+'"/><a href="'+keyurl+'">'+decodeURIComponent(uid).replace('<','&lt;')+'</a>';
+
+						// We need to extract the key block since some servers seem to return HTML despite options=mr
+						getPGPKey(keyurl, keyid, function(data, keyid) { var key = escape(data.match(/-----BEGIN PGP PUBLIC KEY BLOCK-----(.|[\n\r])*-----END PGP PUBLIC KEY BLOCK-----/));  document.getElementById(keyid).setAttribute('data-pgpkey', key); key_selected(null) });
+						document.getElementById('download_link').style.display = 'inline';
+					}
+				}
+			}
 		}
 		if(xmlhttp.readyState==4) {
 			// Query done, but maybe not successfully. Update UI to reflect progress
 			gloading -= 1;
 			if(gloading <= 0) { // Done!
 				document.getElementById('loading_indicator').style.display = 'none';
-				if(gstorage) {
-					sessionStorage.lookupResults = document.getElementById('results').innerHTML;
-				}
 			}
 			else {
 				queryKey(addresses,index+1); // Fetch next key
@@ -53,6 +68,16 @@ function queryKey(addresses, index) {
 	// Update UI
 	document.getElementById('count').innerHTML = gloading;
 	document.getElementById('loading_indicator').style.display = 'inline';
+	xmlhttp.send();
+}
+function getPGPKey(url, keyid, whenready) {
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function() {
+		if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+			whenready(xmlhttp.responseText, keyid);
+		}
+	}
+	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
 }
 function handleFileSelect(evt) {
@@ -70,20 +95,24 @@ function handleFileSelect(evt) {
 	}
 }
 function init() {
-	loadCached();
 	if(!window.FileReader) {
 		document.getElemebyId('file').disabled = true;
-	}
-}
-function loadCached() {
-	// Restore saved results so we don't need to query again when e.g. the back button is pressed
-	if(document.referrer.indexOf('accounts.google.com') < 0 && sessionStorage.lookupResults) {
-		document.getElementById('results').innerHTML = sessionStorage.lookupResults;
-		document.getElementById('search_results').style.display = 'block';
-		document.getElementById('loading_indicator').style.display = 'none';
 	}
 }
 function searchWritein() {
 	document.getElementById('results').innerHTML = '';
 	scanForAddresses(document.getElementById('writein').value);
+}
+function key_selected(selected) {
+	dl = document.getElementById('download_link');
+	dl.href = 'data:application/pgp-keys;charset=utf-8,';
+	elems = document.getElementsByTagName('input');
+	for(i=0; i <  elems.length; i++) {
+		elem = elems[i];
+		if(elem.getAttribute('class') === 'keyselect') {
+			if(elem.checked) {
+				dl.href += elem.getAttribute('data-pgpkey');
+			}
+		}
+	}
 }
