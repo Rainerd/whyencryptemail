@@ -10,8 +10,11 @@ function lookupAddresses(addresses) {
 	window.location='#search_results';
 	document.getElementById('loading_indicator').style.display = 'inline';
 	document.getElementById('download_link').style.display = 'none';
-	gloading += addresses.length;
-	queryKey(addresses, 0);
+	gloading = addresses.length;
+	threads = 5;
+	for(i = 0; i < threads; i++) {
+		queryKey(addresses, i, threads);
+	}
 }
 
 // Query keys until there are no more left
@@ -19,7 +22,9 @@ function lookupAddresses(addresses) {
 // This is to make sure the server is not bombarded with queries (they get upset)
 // TODO: Probably OK to make a few queries at the same time
 // TODO: Would it be possible to use websockets instead of AJAX to avoid needing a proxy?
-function queryKey(addresses, index) {
+function queryKey(addresses, index, threads) {
+	if (index > addresses.length) return;
+
 	var xmlhttp=new XMLHttpRequest();
 	// This requires a proxy rewrite by the webserver to work
 	// This is due to cross-domain AJAX being forbidden
@@ -60,7 +65,7 @@ function queryKey(addresses, index) {
 				document.getElementById('loading_indicator').style.display = 'none';
 			}
 			else {
-				queryKey(addresses,index+1); // Fetch next key
+				queryKey(addresses,index+threads, threads); // Fetch next key
 			}
 		}
 	}
