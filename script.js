@@ -197,7 +197,14 @@ function update_instructions() {
 			}
 			break;
 		case 'k9mail':
-			instructions += str_k9mail_instructions;
+			instructions += str_k9mail_setup;
+			if(haskey === 'yes') {
+				instructions += str_k9mail_haskey;
+			}
+			else {
+				instructions += str_k9mail_firstkey;
+			}
+			instructions += str_k9mail_usage;
 			break;
 	}
 	document.getElementById('instructions').innerHTML = instructions;
